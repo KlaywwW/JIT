@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+    <title>制二线在制品管理</title>
+    <!-- Bootstrap Styles-->
+    <link  rel="stylesheet" type="text/css" href="assets/css/bootstrap.css"/>
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" >
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" type="text/css"/>
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand" href="index.html"><i class="fa fa-comments"></i> <strong>JIT-WIP </strong></span>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                  
+         
+                        
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+          
+                </li>
+            
+           
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+     
+     
+     <!-- 侧方导航栏 -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                   <ul class="nav" id="main-menu">
+
+                  <li>
+                        <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i> JIT生产看板</a>
+                    </li>
+                      <li>
+                        <a href="http://192.168.123.198:778/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap"></i>JIT生产管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#">成品仓</a>
+                            </li>
+                            <li>
+                                <a href="http://192.168.123.198:778/link">物料仓</a>
+                            </li>
+                            <li>
+                                <a href="#">半成品仓<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li>
+                                        <a href="http://192.168.123.198:778/pick">在制品明细</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">其他功能开发中</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">其他功能开发中</a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            JIT-WIP <small>制二线在制品系统管理</small>
+                        </h1>
+						<ol class="breadcrumb">
+ 									 <li><a href="http://192.168.123.198:778/pick">制二线在制明细</a></li>
+ 									 <li><a href="http://192.168.123.198:778/wipdetails">各生产段在制明细</a></li>
+						</ol>
+                    </div>
+                </div>
+				
+				
+                <!-- /. ROW  -->
+
+                <div class="row"  >
+                  <div class="col-md-3 col-sm-12 col-xs-12" id="wip">
+                        <div class="panel panel-primary text-center no-boder bg-color-brown brown">
+                            <div class="panel-left pull-left brown">
+                                <i class="fa fa-thumbs-o-down fa-5x"></i>
+                                
+                            </div>
+                            <div class="panel-right pull-right">
+							
+							<h3 th:switch="${session.wip!=null}">
+							   <span th:case="true" th:text="${session.wip}"></span>
+							   <span th:case="false" th:text="'---'  "></span>
+							</h3>
+                             <strong>当日在制量</strong><span>(pcs)</span>
+
+                            </div>
+                        </div>
+                    </div>
+                   
+               
+                    
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder bg-color-red  red">
+                            <div class="panel-left pull-left red">
+                                <i class="fa fa-times fa-5x"></i>
+                            </div>
+                            
+                            <div class="panel-right pull-right">
+                       
+                              <h3 id="linkQuee" th:if="${session.linkQuee!=null}" th:text="${session.linkQuee}">
+							 2222
+							  </h3>
+                               <strong> 目标在制量</strong><span>(pcs)</span>
+                            </div>
+                        </div>
+                    </div>
+                 
+                 
+                 <div class="col-md-3 col-sm-12 col-xs-12" >
+                        <div class="panel panel-primary text-center no-boder bg-color-blue blue">
+                              <div class="panel-left pull-left blue">
+                               <i class="fa fa-usd fa-5x" ></i>
+								</div>
+                                
+                            <div class="panel-right pull-right">
+							<h3 id="money"> 查询中...</h3>
+                               <strong>在制金额</strong><span>(NT$)</span>
+
+                            </div>
+                        </div>
+                    </div>
+                 
+                 
+                </div>
+                
+                
+                 
+				
+			
+				<div class="row">
+			        <div class="col-md-12">
+					    <div class="panel panel-default">
+						    <div class="panel-heading">
+							
+						    </div>
+						<div class="panel-body">
+							  <div id="container" style="height: 400px"></div> 
+						</div>
+					</div>  
+				</div>			
+		   </div> 
+				
+			
+		
+			
+				
+               
+				
+
+	   
+				<div class="tlinks">Collect from <a href="http://www.cssmoban.com/" >企业网站模板</a></div>
+				
+				
+                <!-- /. ROW  -->
+				<footer><p>Copyright &copy; 2019 Startvincci-MIS </p></footer>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    
+   
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"  type="text/javascript"></script>
+	 
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"  type="text/javascript"></script>
+    <!-- Morris Chart Js -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"  type="text/javascript"></script>
+	<script src="assets/js/easypiechart.js"  type="text/javascript"></script>
+    <!-- Custom Js -->
+    <script src="assets/echarts/echarts.min.js"  type="text/javascript"></script>
+    
+    	<script src="assets/js/myjs.js"  type="text/javascript"></script>
+       
+     
+     <script>
+     $(function() {
+    	 
+    	 $("#sideNav").addClass('closed');
+			$('.navbar-side').animate({left: '-260px'});
+			$('#page-wrapper').animate({'margin-left' : '0px'}); 
+    	 
+    	 
+      var time=null;
+      var linkquee=null;
+      var timer=300
+      
+    
+      
+      //图表呈现函数
+      var chart=function(data){
+    
+ 		 var Xtime=data.xtime;//x轴时间
+ 		 var wip=data.wip;//半成品仓
+ 		 var lc=data.linkCounts;//半成品上限
+ 		 var liebie=["当日在制量","目标在制量"]
+ 	
+ 		   
+ 		     var rllfx = echarts.init(document.getElementById("container"));
+ 		 
+ 		     var option = {
+ 		         /* 线条颜色，可设置多个颜色 */
+ 		         color: ['#ffa82f',"#EE6363"],
+ 		         /* 图像四周边距设置 */
+ 		         grid:{
+ 		             left:100,
+ 		             top:30,
+ 		             right:30,
+ 		             bottom:30
+ 		 	 },
+ 		 	 /* 图例说明 */
+ 		 	 legend: {
+ 		 	     // 图例排项 vertical-"竖向"; horizontal-"横向"
+ 		              orient: 'horizontal', 
+ 		              // 图例组件离容器左侧的距离
+ 		             right : 60,
+ 		 	    top: 0,
+ 		 	    //图例文字的样式
+ 		 	    textStyle:{
+ 		 	    	color:'#6ab2ec',
+ 		 	    },
+ 		             // 与series中每个name一一对应
+ 		             data:['当日在制量','目标在制量']
+ 		         },
+ 		 	 /* 鼠标悬浮时显示数据 */
+ 		 	 tooltip : {
+ 		              trigger: 'axis',
+ 		              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+ 		                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+ 		              }
+ 		          },
+ 		         xAxis: {
+ 		             type: 'category',
+ 		             data:Xtime,
+ 		             //设置轴线的属性
+ 		             axisLine:{
+ 		                 lineStyle:{
+ 		                     color:'#BEBEBE',
+ 		                 }
+ 		              },
+ 		              //调整x轴的lable
+ 		              axisLabel:{   
+ 		                 textStyle:{
+ 		                 fontSize:18 // 让字体变小
+ 		                 }
+ 		             } 
+ 		         },
+ 		         yAxis: {
+ 		             type: 'value',
+ 		             // 控制网格线是否显示
+ 		             splitLine: {
+ 		                  show: true, 
+ 		                  //  改变轴线颜色
+ 		                  lineStyle: {
+ 		                      // 使用深浅的间隔色
+ 		                      color: ['#BEBEBE']
+ 		                  }                            
+ 		              },
+ 		             //设置轴线的属性
+ 		             axisLine:{
+ 		                  lineStyle:{
+ 		                      color:'#BEBEBE',
+ 		                  }
+ 		              } ,
+ 		            axisLabel:{   
+ 		    	   	                 textStyle:{
+ 		    		                 fontSize:18 // 让字体变小
+ 		    		                 }
+ 		    		      } 
+ 		         },
+ 		         /* 数据配置，若有多条折线则在数组中追加{name: , data: } */
+ 		         series: [
+ 			        {
+ 		             name:'当日在制量',
+ 		             data: wip,
+ 		             type: 'line',
+ 		             symbol: 'circle',
+ 		             // 设置折点大小
+ 		             symbolSize: 12,
+ 		             // 设置为光滑曲线
+ 		             smooth: true
+ 		  
+ 					
+ 		         },
+ 				
+ 				 {
+						 name:'目标在制量',
+ 		           		 data: lc,
+ 		         	     type: 'line',
+ 		           	     symbol: 'circle',
+ 		             	 // 设置折点大小
+ 		            	 symbolSize: 12,
+ 		           		 // 设置为光滑曲线
+ 		           		 smooth: true
+ 						
+				 }
+ 		 ]
+ 		     };
+ 		      rllfx.setOption(option);
+      }
+       
+      
+    	 //编辑半成品上限---触发的更新请求
+        var refulsh=function(linkQuee){
+     	   $.ajax({
+            	url:"http://192.168.123.198:778/charts",
+            	data:{"linkQuee":linkQuee},
+            	dataType:"json",
+            	success:function(data){
+            		 chart(data);
+            	},
+         	error:function(er){
+         		console.log(er);
+         	}
+         })
+            	
+       }
+      
+      //可编辑状态     
+   	   toReplace = function(divElement) {
+	      var inputElement = document.createElement("input");
+	 	  inputElement.value = divElement.innerHTML;
+       	  divElement.parentNode.replaceChild(inputElement, divElement);
+	      // 当inputElement失去焦点时触发下面函数，使得input变成div
+	      
+	         inputElement.onblur = function() {
+		        divElement.innerHTML = inputElement.value;
+		        linkQuee=inputElement.value;
+		        //判断是否为正整数
+		        var regx=/^[0-9]*[1-9][0-9]*$/;
+		        inputElement.parentNode.replaceChild(divElement, inputElement);
+		        var bool=regx.test(linkQuee);
+		            if(bool){
+		        	    
+		        	     refulsh(linkQuee);
+		             }else{
+		        	    alert("您输入的数字不是正整数！")
+		            }
+		       
+		      
+	         }
+	      
+       }
+       
+   
+   	 
+   	 
+   	 
+       //单击半成品上限数字
+
+        $("#linkQuee").click(function(){
+    	    toReplace(this)
+    	   
+          })
+          
+          
+       //单击在制品上数字
+       $("#wip").click(function(){
+    	  　window.location.href="http://192.168.123.198:778/pick";
+          })
+        
+     
+        //页面刷新图 表初始化
+        $.ajax({
+        	url:"http://192.168.123.198:778/charts",
+        	data:{"time":time},
+        	dataType:"json",
+        	success:function(data){
+        		 chart(data);
+        		 
+        		 
+        		 
+        		 //查询在制金额
+        		
+        		   $.ajax({
+        	        	url:"http://192.168.123.198:778/findAllMoney",
+        	        	data:{},
+        	       	dataType:"text",
+        	        	success:function(data){
+        	        		 $("#money").text(data);
+        	        	},
+        	        	error:function(er){
+        	        		console.log(er);
+        	        	}
+        	        })
+        		 
+        		 
+        		 
+        		 
+        		 
+        		
+        		 
+        		 
+        		 
+        		 
+        	},
+        	error:function(er){
+        		console.log(er);
+        	}
+        })
+   
+     })
+
+     
+    
+       </script>
+
+</body>
+          
+</html>

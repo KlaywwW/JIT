@@ -1,0 +1,642 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+
+    <title>JIT各段在制明细</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet"/>
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet"/>
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet"/>
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+
+    <!-- 搜索框 css-->
+    <style type="text/css">
+        <!--
+        父级
+
+        -->
+        .fatherdiv {
+            background-color: #D8D8D8;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .xianshi a {
+            text-decoration: none;
+        }
+
+        .xianshi:hover {
+            background-color: #C0C0C0;
+        }
+
+        .xianshi {
+            background-color: #D8D8D8;
+        }
+    </style>
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" href="index.html"><i class="fa fa-comments"></i> <strong>JIT-WIP </strong></span>
+        </div>
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+
+                <!-- /.dropdown-messages -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-tasks">
+
+                </ul>
+                <!-- /.dropdown-tasks -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-alerts">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-comment fa-fw"></i> New Comment
+                                <span class="pull-right text-muted small">4 min</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                <span class="pull-right text-muted small">12 min</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                <span class="pull-right text-muted small">4 min</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-tasks fa-fw"></i> New Task
+                                <span class="pull-right text-muted small">4 min</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                <span class="pull-right text-muted small">4 min</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>See All Alerts</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-alerts -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </nav>
+
+
+    <!-- 侧方导航栏 -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i>
+                        JIT生产统计</a>
+                </li>
+
+                <li>
+                    <a href="http://192.168.123.198:778/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </nav>
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">
+                        JIT-WIP
+                        <small>制二线各生产段在制品进度统计</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="http://192.168.123.198:778/wip">首页</a></li>
+                        <li><a href="http://192.168.123.198:778/pick">生产线在制品数据</a></li>
+
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">
+
+                    </h1>
+                    <div class="panel-body">
+                        <div class="row">
+
+
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div>
+                                        <p>
+                                            <strong>制二线开料+备料在制数量:<span style="color:red" th:if="${session.An!=null}"
+                                                                    th:text="${session.An}"></span></strong>
+                                            <span id="A" class="pull-right text-muted" th:if="${session.A!=null}"
+                                                  th:text="${session.A+'%'}" style="color:green"></span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div id="A1" class="progress-bar progress-bar-success" role="progressbar"
+                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 60%">
+                                                <span class="sr-only">40% Complete (success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div>
+                                        <p>
+                                            <strong>制二线作色在制数量:<span style="color:red" th:if="${session.Bn!=null}"
+                                                                  th:text="${session.Bn}"></span></strong>
+                                            <span id="B" class="pull-right text-muted" th:if="${session.B!=null}"
+                                                  th:text="${session.B+'%'}" style="color:green"></span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div id="B1" class="progress-bar progress-bar-info" role="progressbar"
+                                                 aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 28%">
+                                                <span class="sr-only">28% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div>
+                                        <p>
+                                            <strong>制二线里心在制数量:<span style="color:red" th:if="${session.Cn!=null}"
+                                                                    th:text="${session.Cn}">12000个</span></strong>
+                                            <span id="C" class="pull-right text-muted" th:if="${session.C!=null}"
+                                                  th:text="${session.C+'%'}" style="color:green"></span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div id="C1" class="progress-bar progress-bar-warning" role="progressbar"
+                                                 aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 60%">
+                                                <span class="sr-only">32% Complete (warning)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <ul>
+                                    <li><h4 style="color: #E0A800;font-weight: bold">未超出规定时间,结束时间背景颜色---黄色</h4></li>
+                                    <li><h4 style="color: red;font-weight: bold">超出规定时间,结束时间背景颜色---红色</h4></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">开料+备料---需要时间3天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">作色---需要时间3天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">里心---需要时间2天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">组装+包装---需要时间3天</h7></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label style="display: none;color: red" id="textInfo"></label>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#home" data-toggle="tab">在制品分布总览</a>
+                                </li>
+                                <li class=""><a href="#profile" data-toggle="tab">在制品分布柱状图</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="home">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="table-responsive">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+
+                                                                        <th>产品款号</th>
+                                                                        <th>工令单号</th>
+                                                                        <th>当前进度</th>
+                                                                        <th>客户订单号</th>
+                                                                        <th>计划数量</th>
+                                                                        <th>生产单位</th>
+
+                                                                        <!--<th style="color:red">A段生产天数</th>-->
+                                                                        <!--<th style="color:red">B段生产天数</th>-->
+                                                                        <!--<th style="color:red">C段生产天数</th>-->
+                                                                        <th>生产领皮料时间</th>
+                                                                        <th>计划交期</th>
+                                                                        <th style="color:blue">开料+备料开始时间（3天）</th>
+                                                                        <th style="color:blue">开料+备料结束时间</th>
+                                                                        <th style="color:blue">作色开始时间（3天）</th>
+                                                                        <th style="color:blue">作色结束时间</th>
+                                                                        <th style="color:blue">里心开始时间（2天）</th>
+                                                                        <th style="color:blue">里心结束时间</th>
+                                                                        <th style="color:blue">组装+包装开始时间（2天）</th>
+                                                                        <th style="color:blue">组装+包装结束时间</th>
+                                                                        <th style="color:blue">出库时间</th>
+
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr class="danger"
+                                                                        th:if="${session.Allwipdetails!=null}"
+                                                                        th:each="wipdetails,terStat:${session.Allwipdetails}">
+
+                                                                        <td th:text="${wipdetails.bomNo}"></td>
+                                                                        <th th:text="${wipdetails.planNo}"></th>
+
+                                                                        <td th:switch="${wipdetails.info!=null}">
+                                                                            <div th:case="true"
+                                                                                 th:text="${wipdetails.info}"
+                                                                                 style="font-size:16px;color:red"></div>
+                                                                            <div th:case="false" id="price1"
+                                                                                 style="color:red"></div>
+                                                                        </td>
+
+                                                                        <td th:text="${wipdetails.keHu}"></td>
+                                                                        <td th:text="${wipdetails.num}"></td>
+                                                                        <td th:text="${session.brief2}">制二</td>
+
+                                                                        <!--<td th:switch="${wipdetails.day1!=null}">-->
+                                                                        <!--<div th:case="true" th:text="${wipdetails.day1}" style="font-size:16px;color:red"> </div>-->
+                                                                        <!--<div th:case="false" id="price1" ></div>-->
+                                                                        <!--</td>-->
+                                                                        <!---->
+                                                                        <!---->
+                                                                        <!--<td th:switch="${wipdetails.day2!=null}">-->
+                                                                        <!--<div th:case="true" th:text="${wipdetails.day2}" style="font-size:16px;color:red"> </div>-->
+                                                                        <!--<div th:case="false" id="price1" ></div>-->
+                                                                        <!--</td>-->
+                                                                        <!---->
+                                                                        <!---->
+                                                                        <!--<td th:switch="${wipdetails.day3!=null}">-->
+                                                                        <!--<div th:case="true" th:text="${wipdetails.day3}" style="font-size:16px;color:red"> </div>-->
+                                                                        <!--<div th:case="false" id="price1" ></div>-->
+                                                                        <!--</td>-->
+
+                                                                        <td th:switch="${wipdetails.LingPiLiaoTime!=null}">
+                                                                            <div th:case="true"
+                                                                                 th:text="${#dates.format(wipdetails.LingPiLiaoTime,'yyyy-MM-dd')}"
+                                                                                 style="font-size:16px;color:green"></div>
+                                                                            <div th:case="false">查询中...</div>
+                                                                        </td>
+
+
+                                                                        <td th:text="${#dates.format(wipdetails.PEndDate,'yyyy-MM-dd')}"
+                                                                            style="font-size:16px;color:green"></td>
+
+                                                                        <td th:switch="${wipdetails.time1!=null}"
+                                                                            class="go">
+                                                                            <div th:case="true"
+                                                                                 th:text="${#dates.format(wipdetails.time1,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="font-size:16px;color:red"></div>
+                                                                            <div th:case="false" id="price1"></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div th:if="${wipdetails.timediffer1<=72}"
+                                                                                 th:text="${#dates.format(wipdetails.endtime1,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="background-color: #E0A800">
+                                                                            </div>
+                                                                            <div th:if="${wipdetails.timediffer1>12}"
+                                                                                 style="background-color: #C82333"
+                                                                                 th:text="${#dates.format(wipdetails.endtime1,'yyyy-MM-dd HH:mm:ss')}">
+
+                                                                            </div>
+
+                                                                        </td>
+
+
+                                                                        <td th:switch="${wipdetails.time2!=null}"
+                                                                            class="go">
+                                                                            <div th:case="true"
+                                                                                 th:text="${#dates.format(wipdetails.time2,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="font-size:16px;color:red"></div>
+                                                                            <div th:case="false" id="price1"></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div th:if="${wipdetails.timediffer2<=72}"
+                                                                                 th:text="${#dates.format(wipdetails.endtime2,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="background-color: #E0A800">
+                                                                            </div>
+                                                                            <div th:if="${wipdetails.timediffer2>72}"
+                                                                                 style="background-color: #C82333"
+                                                                                 th:text="${#dates.format(wipdetails.endtime2,'yyyy-MM-dd HH:mm:ss')}">
+                                                                            </div>
+
+                                                                        </td>
+
+                                                                        <td th:switch="${wipdetails.time3!=null}"
+                                                                            class="go">
+                                                                            <div th:case="true"
+                                                                                 th:text="${#dates.format(wipdetails.time3,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="font-size:16px;color:red"></div>
+                                                                            <div th:case="false" id="price1"></div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <div th:if="${wipdetails.timediffer3<=48}"
+                                                                                 th:text="${#dates.format(wipdetails.endtime3,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="background-color: #E0A800">
+                                                                            </div>
+                                                                            <div th:if="${wipdetails.timediffer3>48}"
+                                                                                 style="background-color: #C82333"
+                                                                                 th:text="${#dates.format(wipdetails.endtime3,'yyyy-MM-dd HH:mm:ss')}">
+                                                                            </div>
+
+                                                                        </td>
+
+
+                                                                        <td th:switch="${wipdetails.time4!=null}"
+                                                                            class="go">
+                                                                            <div th:case="true"
+                                                                                 th:text="${#dates.format(wipdetails.time4,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="font-size:16px;color:red"></div>
+                                                                            <div th:case="false" id="price1"></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div th:if="${wipdetails.timediffer4<=48}"
+                                                                                 th:text="${#dates.format(wipdetails.endtime4,'yyyy-MM-dd HH:mm:ss')}"
+                                                                                 style="background-color: #E0A800">
+                                                                            </div>
+                                                                            <div th:if="${wipdetails.timediffer4>48}"
+                                                                                 style="background-color: #C82333"
+                                                                                 th:text="${#dates.format(wipdetails.endtime4,'yyyy-MM-dd HH:mm:ss')}">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="go">
+                                                                            <div th:text="${#dates.format(wipdetails.outtime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                                                                        </td>
+
+
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div><!-- row -->
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12" id="wip">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div id="hidden" th:if="${session.isZ!=null}"
+                                                         th:text="${session.isZ}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+                                    <br/>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- Morris Chart Js -->
+<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="assets/js/easypiechart.js"></script>
+<!-- Custom Js -->
+<script src="assets/echarts/echarts.min.js"></script>
+
+<script src="assets/js/myjs.js"></script>
+
+
+<script>
+    $(function () {
+        //获取A BC 3段的值
+        var A = $("#A").text();
+        var B = $("#B").text();
+        var C = $("#C").text();
+        console.log(A + "-" + B + C)
+
+        $("#A1").css("width", A);
+        $("#B1").css("width", B);
+        $("#C1").css("width", C);
+
+
+        $(".go").hover(function () {
+            //当鼠标悬浮时
+            $(this).css("background", "#1cc09f");
+
+            //当鼠标离开时
+        }, function () {
+            $(".go").css("background", "#f2dede");
+        });
+
+
+        $("#sideNav").addClass('closed');
+        $('.navbar-side').animate({left: '-260px'});
+        $('#page-wrapper').animate({'margin-left': '0px'});
+
+
+        //进行编辑
+        $(".go").click(function () {
+            var td = $(this);
+            var index = $(this).index() - 7;//获取下标在后端中进行判断
+            var Str = $(this).children("div").html();
+            console.log(Str + "---")
+            //找到它父级tr的th儿子
+            var No = $(this).parent().children("th").text();
+            console.log(td + "---" + index + "--" + Str + "no是:" + No);
+
+
+            if (Str == "暂无记录" || Str == "" || Str == null) {
+                $.ajax({
+                    url: "http://192.168.123.198:778/update",
+                    data: {"No": No, "index": index},
+                    dataType: "text",
+                    success: function (data) {
+                        if (data == "OK") {
+                            $("#textInfo").css('display', 'inline-block');
+                            $("#textInfo").text("新增数据成功");
+                            $("#textInfo").css({"font-color": "#FF6A6A"});
+                            window.location.href = "http://192.168.123.198:778/wipdetails"
+                        } else {
+                            $("#textInfo").css('display', 'inline-block');
+                            $("#textInfo").text("禁止修改前工序时间");
+                            $("#textInfo").css({"font-color": "#FF6A6A"});
+                        }
+
+                    },
+                    error: function (er) {
+                        console.log(er);
+
+                    }
+                })//ajax
+            } else {
+                $.ajax({
+                    url: "http://192.168.123.198:778/update2",
+                    data: {"No": No, "index": index},
+                    dataType: "text",
+                    success: function (data) {
+                        if (data == "OK") {
+                            $("#textInfo").css('display', 'inline-block');
+                            $("#textInfo").text("修改成功");
+                            $("#textInfo").css({"font-color": "#FF6A6A"});
+                            window.location.href = "http://192.168.123.198:778/wipdetails"
+                        } else {
+                            $("#textInfo").css('display', 'inline-block');
+                            $("#textInfo").text("禁止修改前工序时间");
+                            $("#textInfo").css({"font-color": "#FF6A6A"});
+                        }
+
+                    },
+                    error: function (er) {
+                        console.log(er);
+
+                    }
+                })//ajax
+            }
+        })
+
+
+        //获取一个特定的值 如果是第一次进来 就执行
+        var isZhiXing = $("#hidden").text();
+        if (isZhiXing == null || isZhiXing == "" || isZhiXing == undefined) {
+            console.log("---" + isZhiXing)
+            window.location.href = "http://192.168.123.198:778/update3"
+        }
+
+
+    })
+
+
+</script>
+
+</body>
+
+</html>

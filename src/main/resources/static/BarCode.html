@@ -1,0 +1,475 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    
+    <title>JIT-WIP制二线在制品系统管理</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+     <!-- 搜索框 css-->
+     <style type="text/css">
+     <!-- 父级 -->
+       .fatherdiv{
+         background-color:#D8D8D8;
+         font-weight:bold;
+         font-size: 15px;
+      }
+      .xianshi a{
+       text-decoration: none;
+      }
+      .xianshi:hover {
+	  background-color: #C0C0C0;
+    }
+    .xianshi{
+     background-color:#D8D8D8;
+    }
+     </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand" href="index.html"><i class="fa fa-comments"></i> <strong>JIT-WIP </strong></span>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                  
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>蔡时枚</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>生产工令单已开...</div>
+                            </a>
+                        </li>
+                        
+                     
+                     
+                        
+                      
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>查看全部消息...</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>制二线A段达成率</strong>
+                                        <span class="pull-right text-muted">60% 达成率</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>制二线B段达成率</strong>
+                                        <span class="pull-right text-muted">28% 达成率</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%">
+                                            <span class="sr-only">28% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>制二线C段达成率</strong>
+                                        <span class="pull-right text-muted">60% 达成率</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (warning)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                       
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>查看全部达成率</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-tasks -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 min</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 min</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 min</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 min</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 min</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                    
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                        
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+     
+     
+     <!-- 侧方导航栏 -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a class="active-menu" href="http://192.168.123.198:8080/wip"><i class="fa fa-bar-chart-o"></i> JIT生产统计</a>
+                    </li>
+                    
+                    <li>
+                        <a href="http://192.168.123.198:8080/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                    </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap"></i>JIT生产管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="http://192.168.123.198:8080/pick">成品仓</a>
+                            </li>
+                            <li>
+                                <a href="http://192.168.123.198:8080/link">物料仓</a>
+                            </li>
+                            <li>
+                                <a href="#">半成品仓<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                   
+                                    <li>
+                                      <a href="http://192.168.123.198:8080/pick">在制品明细</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">其他功能开发中</a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            JIT-WIP <small>制二线在制品系统管理</small>
+                        </h1>
+						<ol class="breadcrumb">
+ 									 <li><a href="#">JIT生产管理</a></li>
+ 									 <li><a href="#">物料仓</a></li>		
+						</ol>	
+                    </div>
+                </div>
+                <!-- 搜索框 -->
+	           <div class="row">
+				 <div class="col-md-12 col-sm-12 col-xs-12" id="wip">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+						</div>
+						<div class="panel-body">
+						   <div class="row">
+						       <div class="col-md-6 col-sm-12 col-xs-12" >
+						           <form role="form">
+                                            <div  class="father">
+                                                   <div class="row">
+                                                     <div class="col-sm-12 col-md-4">
+               
+               								 		 <select name="dataTable_length" aria-controls="dataTable" class="form-control" id="typeInfo">
+           												 <option value="1" selected="selected">存货编码</option>
+           												 <option value="2">客户编码</option>
+            											 <option value="3">品牌名称</option>
+           												 <option value="4">工令单号</option>
+           											 </select> 
+              											 </div>
+              											  <div class="col-sm-12 col-md-6">
+              											     <input class="form-control"  id="textInfo">  
+              											  </div>
+              											  <div class="col-sm-12 col-md-2">
+              											   <button class="btn btn-primary" id="seachInfo"><i class="fa fa-edit "></i>查询</button>
+              											  </div>
+                                                   </div>
+                                                    
+                                                
+                                           </div>                      
+                                     </form>
+						        </div>
+						        
+						 
+						  
+						     <div class="col-md-3 col-sm-12 col-xs-12" >
+						       <input class="form-control" style="color:#FF0000;display: none" id="Info">
+						     </div>
+						</div><!-- row -->
+						
+					   </div>
+					</div>
+				</div>
+				</div>
+				
+               <div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 style="color: bule">关于"<span id="xianshi" th:text="${session.message}"></span>的最近记录</h4>
+						</div>
+						<div class="panel-body">
+						  <div class="table-responsive">
+				                        <table class="table table-bordered"  width="100%" cellspacing="0">
+                                            <thead>
+               									 <tr>
+               								     <th>款号</th>
+                							     <th>存货编码</th>
+                							     <th>品牌名称</th>
+                							     <th>upc号码</th>
+                 								 <th>客户</th>
+                 								 <th>价格</th>
+                 								 <th>价格标签规格</th>
+                 								 <th>胶片标签规格</th>
+                							     <th>打印</th>
+               									 </tr>
+             							 </thead>
+              							 <tbody>
+              								 <tr th:if="${session.erpSpList!=null}" th:each="erpSp,terStat:${session.erpSpList}">
+              							     <th th:text="${erpSp.Sp_Name}"></th>
+                						     <th th:text="${erpSp.Sp_No}">Position</th>
+                 							  <th th:text="${erpSp.erpspPlusmyField05}">Office</th>
+                						  <th th:text="${erpSp.erpspPlusmyField03}">Office</th>
+              									    <th th:text="${erpSp.erpspPlusmyField12}">Age</th>
+              						    <th th:text="${erpSp.erpspPlusmyField06}">Start date</th>
+              
+                						  <th> <button class="btn btn-success"  th:οnclick="'javascript:pointBarCode(\''+${erpSp.Sp_id}+'\');'"><i class="fa fa-file-text-o" aria-hidden="true"></i>打印</button></th>
+               						 </tr>
+       
+              </tbody>
+            </table>
+            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+                 
+             
+				
+                
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+
+      <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+	 
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- Morris Chart Js -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+	<script src="assets/js/easypiechart.js"></script>
+    <!-- Custom Js -->
+    <script src="assets/echarts/echarts.min.js"></script>
+    
+     <script src="assets/js/myjs.js"></script>
+       
+
+       
+       
+     
+     <script>
+ 	
+     $(function() {
+	     $("#seachInfo").click(function(){
+      	    var No=$("#typeInfo").val();
+      	    var mes=$("#textInfo").val();
+      	    //转换为大写
+      	    mes=mes.toUpperCase();
+      	    console.info(No+"---"+mes);
+      	    var bool=/[\u4E00-\u9FA5]/g.test(mes);//正则表达式判断是否为汉字
+      	    
+      	    if(!bool){
+      	    	  $("#Info").css('display','inline-block');
+   	              $("#Info").val("正在查询请稍等...")
+   	              
+      	      $.ajax({
+ 	             	url:"http://192.168.123.198:8080/erpSp",
+ 	             	data:{"No":No,"mes":mes},
+ 	             	dataType:"json",
+ 	             	success:function(data){
+ 	             		if(data!=null){
+ 	             	     $("#Info").val("查询成功...")
+ 	             	        window.location.reload();  
+ 	             		}else{
+ 	             	      $("#Info").val("没有查询到您输入的内容，请检查书写...")
+ 	             		}
+ 	             	
+ 	             	},
+ 	             	error:function(er){
+ 	             		console.log(er);
+ 	             	    $("#Info").css('display','inline-block');
+	             	    $("#Info").val("系统错误:请联系mis开发人员...")
+ 	       
+ 	             	}
+ 	             })//ajax 
+      	    }else{
+      	    	 $("#Info").css('display','inline-block');
+	             	 $("#Info").val("您输入的内容格式不正确，不能输入汉字...")
+      	    }
+      	
+            })
+            
+            
+            
+            //查找mysql数据库品牌和贴纸关系
+            function pointBarCode(id){
+   	      $.ajax({
+	             	url:"http://192.168.123.198:8081/findBarCode",
+	             	data:{"id":id},
+	             	dataType:"text",
+	             	success:function(data){         	
+	             	},
+	             	error:function(er){
+	             		console.log(er);   	             	
+	             	}
+	             })//aja
+	    	 
+	     }
+ })
+  
+    
+     </script>
+
+</body>
+          
+</html>
