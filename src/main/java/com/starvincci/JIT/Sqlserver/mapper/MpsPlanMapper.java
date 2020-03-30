@@ -58,7 +58,7 @@ public interface MpsPlanMapper {//工单相关接口
 	
 	
 	
-	
+
 	@Select("<script>"
 			+ "select Sum(Plan_Quan) from mpsPlan"
 			+ "<where>"
@@ -70,7 +70,7 @@ public interface MpsPlanMapper {//工单相关接口
 			+ "</script>")
 
 	public BigDecimal selectPlanQueeInPlanNo(List<String> nos);
-	
+
 	
 	@Select("<script>"
 			+ "select Sum(In_Quan) from mpsPlan"

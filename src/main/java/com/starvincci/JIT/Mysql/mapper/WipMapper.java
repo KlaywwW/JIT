@@ -29,7 +29,7 @@ public interface WipMapper {
 	/**
 	 * 新增一条工单记录
 	 */
-	@Insert("insert into wipdetails value(null,#{planNo},#{bomNo},#{mkName},#{info},#{zt},#{time1},#{endtime1},#{time2},#{endtime2},#{time3},#{endtime3},#{time4},#{endtime4},null,null,null)")
+	@Insert("insert into wipdetails value(null,#{planNo},#{bomNo},#{mkName},#{info},#{zt},#{time1},#{endtime1},#{time2},#{endtime2},#{time3},#{endtime3},#{time4},#{endtime4},null,null,null,null)")
     public int insertOneMpsPlan(WipDetails wipdetails);
   
 	/**
