@@ -83,6 +83,23 @@ public interface WipMapper {
 			+ "</where>"
 			+ "</script>")
 	public List<String> selectWipInDuan3(List<String> Nos);
+
+	/**
+	 * 查询在制品工令单中的
+	 * @param info
+	 * @return
+	 */
+	@Select("<script>"
+			+ "select planNo from wipdetails "
+			+ "<where>"
+			+ "planNo in"
+			+"<foreach  item='item' collection='list' open='(' close=')' separator=','>"
+			+"#{item}"
+			+"</foreach>"
+			+ "and info='D段' "
+			+ "</where>"
+			+ "</script>")
+	public List<String> selectWipInDuanD(List<String> Nos);
 	
 	/**
 	 * 查询在制品工令单中的
@@ -176,7 +193,7 @@ public interface WipMapper {
     @Update("update wipdetails set  time3=null,endtime3=null, info='B段' ,day2=null  where planNo=#{No} ")
     public int clearTime3(String No);
     
-    @Update("update wipdetails set  time4=null, endtime4=null,zt=1, info='C段'  , day3=null where planNo=#{No} ")
+    @Update("update wipdetails set  time4=null, endtime4=null,zt=1, info='C段', day3=null where planNo=#{No} ")
 	public int clearTime4(String No);
 	@Update("update wipdetails set  outtime=null, info='D段' where planNo=#{No} ")
 	public int clearChuKu(String No);

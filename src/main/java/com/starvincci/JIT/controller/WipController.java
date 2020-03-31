@@ -41,6 +41,11 @@ public class WipController {
     private MmlReqOutServiceImpl mmlReqOutService;
 
 
+    @RequestMapping("/download")
+    public String downloadapk(){
+        return "download";
+    }
+
     /**
      * @param request
      * @param Brief   生产单位
@@ -86,18 +91,14 @@ public class WipController {
         List<Integer> taiwanids1 = pingJianIds.stream().distinct().collect(Collectors.toList());
         ids.removeAll(taiwanids1);
 
-        log.info("....开始查询");
 
-        //查询到在制工单集合
+
         List<WipDetails> wipde = mpsService.selectMpsPlansByIds(ids);
         //将id集合一一遍历循环 查找mysql数据库中
         WipDetails wipdetail = null;
         String planNo = "";
-        //循环遍历集合获取NO，查询到数据
-        //进入首页不涉及到新增数据
         for (int i = 0; i < wipde.size(); i++) {
-            System.out.println("开始循环..");
-            // wipde.get(i).setLingPiLiaoTime(mmlReqOutService.getLingLiaoTimeByPlanId(wipde.get(i).getPlanId()));
+            wipde.get(i).setLingPiLiaoTime(mmlReqOutService.getLingLiaoTimeByPlanId(wipde.get(i).getPlanId()));
             planNo = wipde.get(i).getPlanNo();
             wipdetail = wipService.selectWipDetails(planNo);
             if (wipdetail != null) {
@@ -105,12 +106,74 @@ public class WipController {
                 wipde.get(i).setTime2(wipdetail.getTime2());
                 wipde.get(i).setTime3(wipdetail.getTime3());
                 wipde.get(i).setTime4(wipdetail.getTime4());
+
+                //jdp修改二次开发
+                //获取结束时间
+                wipde.get(i).setEndtime1(wipdetail.getEndtime1());
+                wipde.get(i).setEndtime2(wipdetail.getEndtime2());
+                wipde.get(i).setEndtime3(wipdetail.getEndtime3());
+                wipde.get(i).setEndtime4(wipdetail.getEndtime4());
+                wipde.get(i).setOuttime(wipdetail.getOuttime());
+
+//                获取时间差
+                if (wipdetail.getEndtime1() != null) {
+                    int hourdiffer1 = DateUtils.getHourDiffer(wipdetail.getTime1(), wipdetail.getEndtime1());
+                    wipde.get(i).setTimediffer1(hourdiffer1);
+                    System.out.println("diff1---"+wipde.get(i).getTimediffer1());
+                }
+                if (wipdetail.getEndtime2() != null) {
+                    int hourdiffer2 = DateUtils.getHourDiffer(wipdetail.getTime2(), wipdetail.getEndtime2());
+                    wipde.get(i).setTimediffer2(hourdiffer2);
+                    System.out.println("diff2---"+wipde.get(i).getTimediffer2());
+                }
+                if (wipdetail.getEndtime3() != null) {
+                    int hourdiffer3 = DateUtils.getHourDiffer(wipdetail.getTime3(), wipdetail.getEndtime3());
+                    wipde.get(i).setTimediffer3(hourdiffer3);
+                    System.out.println("diff3---"+wipde.get(i).getTimediffer3());
+                }
+                if (wipdetail.getEndtime4() != null) {
+                    int hourdiffer4 = DateUtils.getHourDiffer(wipdetail.getTime4(), wipdetail.getEndtime4());
+                    wipde.get(i).setTimediffer4(hourdiffer4);
+                    System.out.println("diff4---"+wipde.get(i).getTimediffer4());
+                }
+
                 wipde.get(i).setInfo(wipdetail.getInfo());
                 wipde.get(i).setDay1(wipdetail.getDay1());
                 wipde.get(i).setDay2(wipdetail.getDay2());
                 wipde.get(i).setDay3(wipdetail.getDay3());
             }
         }
+
+
+        session.removeAttribute("Allwipdetails");
+//        session.setAttribute("Allwipdetails", wipde);
+        session.setAttribute("isZ", 1);
+
+
+
+        //查询到在制工单集合
+//        List<WipDetails> wipde = mpsService.selectMpsPlansByIds(ids);
+//        //将id集合一一遍历循环 查找mysql数据库中
+//        WipDetails wipdetail = null;
+//        String planNo = "";
+//        //循环遍历集合获取NO，查询到数据
+//        //进入首页不涉及到新增数据
+//        for (int i = 0; i < wipde.size(); i++) {
+//            System.out.println("开始循环..");
+//            // wipde.get(i).setLingPiLiaoTime(mmlReqOutService.getLingLiaoTimeByPlanId(wipde.get(i).getPlanId()));
+//            planNo = wipde.get(i).getPlanNo();
+//            wipdetail = wipService.selectWipDetails(planNo);
+//            if (wipdetail != null) {
+//                wipde.get(i).setTime1(wipdetail.getTime1());
+//                wipde.get(i).setTime2(wipdetail.getTime2());
+//                wipde.get(i).setTime3(wipdetail.getTime3());
+//                wipde.get(i).setTime4(wipdetail.getTime4());
+//                wipde.get(i).setInfo(wipdetail.getInfo());
+//                wipde.get(i).setDay1(wipdetail.getDay1());
+//                wipde.get(i).setDay2(wipdetail.getDay2());
+//                wipde.get(i).setDay3(wipdetail.getDay3());
+//            }
+//        }
         session.setAttribute("Allwipdetails", wipde);
 
         //根据在制id集合获取到在制No集合
@@ -125,6 +188,7 @@ public class WipController {
         } else {
             SumA = 0;
         }
+        System.out.println("SumA-------"+SumA);
 
 
         //查询B
@@ -135,19 +199,50 @@ public class WipController {
         } else {
             SumB = 0;
         }
-
-
+        System.out.println("SumB-------"+SumB);
+        //查询C
         List<String> listC = wipService.selectWipInDuan3(Nos);
-        List<String> listC2 = wipService.selectWipInDuan4(Nos);
-        boolean a = (listC != null && listC.size() > 0 == true);
-        boolean a2 = (listC2 != null && listC2.size() > 0 == true);
         Integer SumC = 0;
-        if (a || a2) {
-            listC.addAll(listC2);
+        if (listC != null && listC.size() > 0) {
             SumC = mpsService.selectPlanQueeInPlanNo(listC).intValue() - mpsService.selectInQueeInPlanNo(listC).intValue();
         } else {
             SumC = 0;
         }
+        System.out.println("SumC-------"+SumC);
+
+        //查询D
+        List<String> listD = wipService.selectWipInDuanD(Nos);
+        Integer SumD = 0;
+        if (listD != null && listD.size() > 0) {
+            SumD = mpsService.selectPlanQueeInPlanNo(listD).intValue() - mpsService.selectInQueeInPlanNo(listD).intValue();
+        } else {
+            SumD = 0;
+        }
+        System.out.println("SumD-------"+SumD);
+
+//        List<String> listD = wipService.selectWipInDuanD(Nos);
+//        List<String> listD2 = wipService.selectWipInDuan4(Nos);
+//        boolean a = (listD != null && listD.size() > 0 == true);
+//        boolean a2 = (listD2 != null && listD2.size() > 0 == true);
+//        Integer SumD = 0;
+//        if (a || a2) {
+//            listD.addAll(listD2);
+//            SumD = mpsService.selectPlanQueeInPlanNo(listD).intValue() - mpsService.selectInQueeInPlanNo(listD).intValue();
+//        } else {
+//            SumD = 0;
+//        }
+
+//        List<String> listC = wipService.selectWipInDuan3(Nos);
+//        List<String> listC2 = wipService.selectWipInDuan4(Nos);
+//        boolean a = (listC != null && listC.size() > 0 == true);
+//        boolean a2 = (listC2 != null && listC2.size() > 0 == true);
+//        Integer SumC = 0;
+//        if (a || a2) {
+//            listC.addAll(listC2);
+//            SumC = mpsService.selectPlanQueeInPlanNo(listC).intValue() - mpsService.selectInQueeInPlanNo(listC).intValue();
+//        } else {
+//            SumC = 0;
+//        }
 
 
         BigDecimal SumIn = mpsService.selectInQuee(ids);
@@ -176,6 +271,13 @@ public class WipController {
 
         session.setAttribute("C", decimalC);
         session.setAttribute("Cn", SumC);
+
+        BigDecimal f4 = new BigDecimal((float) SumD * 100 / wip);
+        BigDecimal decimalD = f4.setScale(2, BigDecimal.ROUND_HALF_UP);
+        log.info(f4 + "");
+
+        session.setAttribute("D", decimalD);
+        session.setAttribute("Dn", SumD);
 
 
         return "WIPDetails";
@@ -237,10 +339,10 @@ public class WipController {
             }
             //二次开发新增
             else if(index == 9){
-                wip.setInfo("出库");
+                wip.setInfo("入库");
                 wip.setMkName("制二");
                 wip.setOuttime(timestamp);
-                wip.setZt(1);
+                wip.setZt(0);
             }
 
 
@@ -259,7 +361,7 @@ public class WipController {
                 }
 
             } else if (index == 3) {
-                if (wipdetail.getTime1() != null) {
+                if (wipdetail.getTime1() != null && wipdetail.getEndtime1()!=null && !"".equals(wipdetail.getEndtime1())) {
                     wipdetail.setInfo("B段");
                     wipdetail.setTime2(timestamp);
                     String mes = DateUtils.getDayDiffer(wipdetail.getTime1(), timestamp);
@@ -277,7 +379,7 @@ public class WipController {
                 }
 
             } else if (index == 5) {
-                if (wipdetail.getTime2() != null) {
+                if (wipdetail.getTime2() != null && wipdetail.getEndtime2()!=null && !"".equals(wipdetail.getEndtime2())) {
                     wipdetail.setInfo("C段");
                     wipdetail.setTime3(timestamp);
                     String mes = DateUtils.getDayDiffer(wipdetail.getTime2(), timestamp);
@@ -295,7 +397,7 @@ public class WipController {
                 }
 
             } else if(index==7){
-                if (wipdetail.getTime3() != null) {
+                if (wipdetail.getTime3() != null  && wipdetail.getEndtime3()!=null && !"".equals(wipdetail.getEndtime3())) {
                     wipdetail.setInfo("D段");
                     wipdetail.setTime4(timestamp);
 //                    wipdetail.setZt(0);
@@ -314,13 +416,13 @@ public class WipController {
                     return "error";
                 }
             }else{
-                if(wipdetail.getTime4()!=null){
-                    wipdetail.setInfo("出库");
+                if(wipdetail.getTime4()!=null  && wipdetail.getEndtime4()!=null && !"".equals(wipdetail.getEndtime4())){
+                    wipdetail.setInfo("入库");
                     wipdetail.setOuttime(timestamp);
                     wipdetail.setZt(0);
                     wipService.updateWipDtetails(wipdetail);
                 }else if (isAdd) {
-                    wipdetail.setInfo("出库");
+                    wipdetail.setInfo("入库");
                     wipdetail.setOuttime(timestamp);
                     wipdetail.setZt(0);
                     wipService.updateWipDtetails(wipdetail);
@@ -434,61 +536,61 @@ public class WipController {
         ids.removeAll(taiwanids1);
 
 
-        List<WipDetails> wipde = mpsService.selectMpsPlansByIds(ids);
-        //将id集合一一遍历循环 查找mysql数据库中
-        WipDetails wipdetail = null;
-        String planNo = "";
-        for (int i = 0; i < wipde.size(); i++) {
-            wipde.get(i).setLingPiLiaoTime(mmlReqOutService.getLingLiaoTimeByPlanId(wipde.get(i).getPlanId()));
-            planNo = wipde.get(i).getPlanNo();
-            wipdetail = wipService.selectWipDetails(planNo);
-            if (wipdetail != null) {
-                wipde.get(i).setTime1(wipdetail.getTime1());
-                wipde.get(i).setTime2(wipdetail.getTime2());
-                wipde.get(i).setTime3(wipdetail.getTime3());
-                wipde.get(i).setTime4(wipdetail.getTime4());
-
-                //jdp修改二次开发
-                //获取结束时间
-                wipde.get(i).setEndtime1(wipdetail.getEndtime1());
-                wipde.get(i).setEndtime2(wipdetail.getEndtime2());
-                wipde.get(i).setEndtime3(wipdetail.getEndtime3());
-                wipde.get(i).setEndtime4(wipdetail.getEndtime4());
-                wipde.get(i).setOuttime(wipdetail.getOuttime());
-
-//                获取时间差
-                if (wipdetail.getEndtime1() != null) {
-                    int hourdiffer1 = DateUtils.getHourDiffer(wipdetail.getTime1(), wipdetail.getEndtime1());
-                    wipde.get(i).setTimediffer1(hourdiffer1);
-                    System.out.println("diff1---"+wipde.get(i).getTimediffer1());
-                }
-                if (wipdetail.getEndtime2() != null) {
-                    int hourdiffer2 = DateUtils.getHourDiffer(wipdetail.getTime2(), wipdetail.getEndtime2());
-                    wipde.get(i).setTimediffer2(hourdiffer2);
-                    System.out.println("diff2---"+wipde.get(i).getTimediffer2());
-                }
-                if (wipdetail.getEndtime3() != null) {
-                    int hourdiffer3 = DateUtils.getHourDiffer(wipdetail.getTime3(), wipdetail.getEndtime3());
-                    wipde.get(i).setTimediffer3(hourdiffer3);
-                    System.out.println("diff3---"+wipde.get(i).getTimediffer3());
-                }
-                if (wipdetail.getEndtime4() != null) {
-                    int hourdiffer4 = DateUtils.getHourDiffer(wipdetail.getTime4(), wipdetail.getEndtime4());
-                    wipde.get(i).setTimediffer4(hourdiffer4);
-                    System.out.println("diff4---"+wipde.get(i).getTimediffer4());
-                }
-
-                wipde.get(i).setInfo(wipdetail.getInfo());
-                wipde.get(i).setDay1(wipdetail.getDay1());
-                wipde.get(i).setDay2(wipdetail.getDay2());
-                wipde.get(i).setDay3(wipdetail.getDay3());
-            }
-        }
-
-
-        session.removeAttribute("Allwipdetails");
-        session.setAttribute("Allwipdetails", wipde);
-        session.setAttribute("isZ", 1);
+//        List<WipDetails> wipde = mpsService.selectMpsPlansByIds(ids);
+//        //将id集合一一遍历循环 查找mysql数据库中
+//        WipDetails wipdetail = null;
+//        String planNo = "";
+//        for (int i = 0; i < wipde.size(); i++) {
+//            wipde.get(i).setLingPiLiaoTime(mmlReqOutService.getLingLiaoTimeByPlanId(wipde.get(i).getPlanId()));
+//            planNo = wipde.get(i).getPlanNo();
+//            wipdetail = wipService.selectWipDetails(planNo);
+//            if (wipdetail != null) {
+//                wipde.get(i).setTime1(wipdetail.getTime1());
+//                wipde.get(i).setTime2(wipdetail.getTime2());
+//                wipde.get(i).setTime3(wipdetail.getTime3());
+//                wipde.get(i).setTime4(wipdetail.getTime4());
+//
+//                //jdp修改二次开发
+//                //获取结束时间
+//                wipde.get(i).setEndtime1(wipdetail.getEndtime1());
+//                wipde.get(i).setEndtime2(wipdetail.getEndtime2());
+//                wipde.get(i).setEndtime3(wipdetail.getEndtime3());
+//                wipde.get(i).setEndtime4(wipdetail.getEndtime4());
+//                wipde.get(i).setOuttime(wipdetail.getOuttime());
+//
+////                获取时间差
+//                if (wipdetail.getEndtime1() != null) {
+//                    int hourdiffer1 = DateUtils.getHourDiffer(wipdetail.getTime1(), wipdetail.getEndtime1());
+//                    wipde.get(i).setTimediffer1(hourdiffer1);
+//                    System.out.println("diff1---"+wipde.get(i).getTimediffer1());
+//                }
+//                if (wipdetail.getEndtime2() != null) {
+//                    int hourdiffer2 = DateUtils.getHourDiffer(wipdetail.getTime2(), wipdetail.getEndtime2());
+//                    wipde.get(i).setTimediffer2(hourdiffer2);
+//                    System.out.println("diff2---"+wipde.get(i).getTimediffer2());
+//                }
+//                if (wipdetail.getEndtime3() != null) {
+//                    int hourdiffer3 = DateUtils.getHourDiffer(wipdetail.getTime3(), wipdetail.getEndtime3());
+//                    wipde.get(i).setTimediffer3(hourdiffer3);
+//                    System.out.println("diff3---"+wipde.get(i).getTimediffer3());
+//                }
+//                if (wipdetail.getEndtime4() != null) {
+//                    int hourdiffer4 = DateUtils.getHourDiffer(wipdetail.getTime4(), wipdetail.getEndtime4());
+//                    wipde.get(i).setTimediffer4(hourdiffer4);
+//                    System.out.println("diff4---"+wipde.get(i).getTimediffer4());
+//                }
+//
+//                wipde.get(i).setInfo(wipdetail.getInfo());
+//                wipde.get(i).setDay1(wipdetail.getDay1());
+//                wipde.get(i).setDay2(wipdetail.getDay2());
+//                wipde.get(i).setDay3(wipdetail.getDay3());
+//            }
+//        }
+//
+//
+//        session.removeAttribute("Allwipdetails");
+//        session.setAttribute("Allwipdetails", wipde);
+//        session.setAttribute("isZ", 1);
 
 //        return "redirect:http://192.168.123.198:778/update4";
         return "WIPDetails";

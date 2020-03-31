@@ -206,11 +206,11 @@
                         <div class="row">
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-md-offset-1">
                                 <div class="panel panel-default">
                                     <div>
                                         <p>
-                                            <strong>制二线开料+备料在制数量:<span style="color:red" th:if="${session.An!=null}"
+                                            <strong>制二线开料+备料(A)在制数量:<span style="color:red" th:if="${session.An!=null}"
                                                                     th:text="${session.An}"></span></strong>
                                             <span id="A" class="pull-right text-muted" th:if="${session.A!=null}"
                                                   th:text="${session.A+'%'}" style="color:green"></span>
@@ -226,11 +226,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="panel panel-default">
                                     <div>
                                         <p>
-                                            <strong>制二线作色在制数量:<span style="color:red" th:if="${session.Bn!=null}"
+                                            <strong>制二线作色(B)在制数量:<span style="color:red" th:if="${session.Bn!=null}"
                                                                   th:text="${session.Bn}"></span></strong>
                                             <span id="B" class="pull-right text-muted" th:if="${session.B!=null}"
                                                   th:text="${session.B+'%'}" style="color:green"></span>
@@ -246,11 +246,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="panel panel-default">
                                     <div>
                                         <p>
-                                            <strong>制二线里心在制数量:<span style="color:red" th:if="${session.Cn!=null}"
+                                            <strong>制二线里心(C)在制数量:<span style="color:red" th:if="${session.Cn!=null}"
                                                                     th:text="${session.Cn}">12000个</span></strong>
                                             <span id="C" class="pull-right text-muted" th:if="${session.C!=null}"
                                                   th:text="${session.C+'%'}" style="color:green"></span>
@@ -265,14 +265,33 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+                                <div class="panel panel-default">
+                                    <div>
+                                        <p>
+                                            <strong>制二线组装+包装(D)在制数量:<span style="color:red" th:if="${session.Dn!=null}"
+                                                                    th:text="${session.Dn}">12000个</span></strong>
+                                            <span id="D" class="pull-right text-muted" th:if="${session.D!=null}"
+                                                  th:text="${session.D+'%'}" style="color:green"></span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div id="D1" class="progress-bar" role="progressbar"
+                                                 aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 60%;background-color: blueviolet">
+                                                <span class="sr-only">32% Complete (warning)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
                                 <ul>
                                     <li><h4 style="color: #E0A800;font-weight: bold">未超出规定时间,结束时间背景颜色---黄色</h4></li>
                                     <li><h4 style="color: red;font-weight: bold">超出规定时间,结束时间背景颜色---红色</h4></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">开料+备料---需要时间3天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">作色---需要时间3天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">里心---需要时间2天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">组装+包装---需要时间2天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">开料+备料(A)---需要时间3天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">作色(B)---需要时间3天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">里心(C)---需要时间2天</h7></li>
+                                    <li><h7 style="color: #31B0D5;font-weight: bold">组装+包装(D)---需要时间2天</h7></li>
                                 </ul>
                             </div>
                         </div>
@@ -396,7 +415,7 @@
                                                                                  th:text="${#dates.format(wipdetails.endtime1,'yyyy-MM-dd HH:mm:ss')}"
                                                                                  style="background-color: #E0A800">
                                                                             </div>
-                                                                            <div th:if="${wipdetails.timediffer1>12}"
+                                                                            <div th:if="${wipdetails.timediffer1>72}"
                                                                                  style="background-color: #C82333"
                                                                                  th:text="${#dates.format(wipdetails.endtime1,'yyyy-MM-dd HH:mm:ss')}">
 
@@ -541,11 +560,13 @@
         var A = $("#A").text();
         var B = $("#B").text();
         var C = $("#C").text();
-        console.log(A + "-" + B + C)
+        var D = $("#D").text();
+        console.log(A + "-" + B+ "-"  + C+ "-" +D)
 
         $("#A1").css("width", A);
         $("#B1").css("width", B);
         $("#C1").css("width", C);
+        $("#D1").css("width", D);
 
 
         $(".go").hover(function () {
@@ -625,11 +646,11 @@
 
 
         //获取一个特定的值 如果是第一次进来 就执行
-        var isZhiXing = $("#hidden").text();
-        if (isZhiXing == null || isZhiXing == "" || isZhiXing == undefined) {
-            console.log("---" + isZhiXing)
-            window.location.href = "http://192.168.123.198:778/update3"
-        }
+        // var isZhiXing = $("#hidden").text();
+        // if (isZhiXing == null || isZhiXing == "" || isZhiXing == undefined) {
+        //     console.log("---" + isZhiXing)
+        //     window.location.href = "http://192.168.123.198:778/update3"
+        // }
 
 
     })

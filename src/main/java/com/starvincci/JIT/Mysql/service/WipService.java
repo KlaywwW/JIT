@@ -52,6 +52,9 @@ public class WipService {
 	 public List<String> selectWipInDuan2(List<String> Nos){
 		 return wipmapper.selectWipInDuan2(Nos);
 	 }
+	public List<String> selectWipInDuanD(List<String> Nos){
+		return wipmapper.selectWipInDuanD(Nos);
+	}
 	 public List<String> selectWipInDuan4(List<String> Nos){
 		 return wipmapper.selectWipInDuan4(Nos);
 	 }
