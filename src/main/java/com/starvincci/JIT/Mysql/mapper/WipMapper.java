@@ -1,4 +1,4 @@
- package com.starvincci.JIT.Mysql.mapper;
+package com.starvincci.JIT.Mysql.mapper;
 
 import java.sql.Timestamp;
 import java.util.List;
