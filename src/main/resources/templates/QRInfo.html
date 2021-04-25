@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -243,12 +243,12 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i>
+                    <a class="active-menu" th:href="@{/wip}"><i class="fa fa-bar-chart-o"></i>
                         JIT生产统计</a>
                 </li>
 
                 <li>
-                    <a href="http://192.168.123.198:778/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                    <a th:href="@{/pick}"><i class="fa fa-table"></i>JIT生产数据</a>
                 </li>
 
                 <li>
@@ -258,7 +258,7 @@
                             <a href="#">成品仓</a>
                         </li>
                         <li>
-                            <a href="http://192.168.123.198:778/link">物料仓</a>
+                            <a th:href="@{/link}">物料仓</a>
                         </li>
                         <li>
                             <a href="#">半成品仓<span class="fa arrow"></span></a>

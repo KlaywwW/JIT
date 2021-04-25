@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <meta charset="utf-8"/>
@@ -246,12 +246,12 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i>
+                    <a class="active-menu" th:href="@{/wip}"><i class="fa fa-bar-chart-o"></i>
                         JIT生产统计</a>
                 </li>
 
                 <li>
-                    <a href="http://192.168.123.198:778/pick"><i class="fa fa-table "></i>JIT生产数据</a>
+                    <a th:href="@{/pick}"><i class="fa fa-table "></i>JIT生产数据</a>
                 </li>
 
                 <li>
@@ -261,7 +261,7 @@
                             <a href="#">成品仓</a>
                         </li>
                         <li>
-                            <a href="http://192.168.123.198:778/link">物料仓</a>
+                            <a th:href="@{/link}">物料仓</a>
                         </li>
                         <li>
                             <a href="#">半成品仓<span class="fa arrow"></span></a>
@@ -291,8 +291,8 @@
                         <small>JIT在制品系统管理</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="http://192.168.123.198:778/wip">首页</a></li>
-                        <li><a href="http://192.168.123.198:778/wipdetails">各生产段在制</a></li>
+                        <li><a th:href="@{/wip}">首页</a></li>
+                        <li><a th:href="@{/wipdetails}">各生产段在制</a></li>
 
                     </ol>
                 </div>
@@ -327,7 +327,7 @@
                                                          th:each="erpSp,Stater:${session.search}">
                                                         <div class="xianshi">
                                                             <input hidden="hidden" th:value="${erpSp.sp_id}"/>
-                                                            <a th:href="@{http://192.168.123.198:778/findErpSPJindu(id=${erpSp.sp_id},spNo=${erpSp.sp_No})}"
+                                                            <a th:href="@{/findErpSPJindu(id=${erpSp.sp_id},spNo=${erpSp.sp_No})}"
                                                                th:text="${erpSp.sp_No}+'---'+${erpSp.sp_Name}"></a>
                                                         </div>
                                                     </div>
@@ -431,7 +431,7 @@
                                                                         <td th:text="${mpsPlan.Brief}"></td>
 
                                                                         <td><a class="btn btn-primary"
-                                                                               th:href="@{http://192.168.123.198:778/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
+                                                                               th:href="@{/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>
@@ -529,7 +529,7 @@
                                                                 <td>台湾在制</td>
                                                                 <td th:text="${mpsPlan.Brief}"></td>
                                                                 <td><a class="btn btn-primary"
-                                                                       th:href="@{http://192.168.123.198:778/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
+                                                                       th:href="@{/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
@@ -627,11 +627,11 @@
                                                                 <td>东莞在制</td>
                                                                 <td th:text="${mpsPlan.Brief}"></td>
                                                                 <td><a class="btn btn-primary"
-                                                                       th:href="@{http://192.168.123.198:778/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
+                                                                       th:href="@{/findwipMoney(id=${mpsPlan.plan_id},No=${mpsPlan.sp_No})}">查询</a>
                                                                 </td>
                                                                 <td>
                                                                     <a class="btn btn-info"
-                                                                       th:href="@{http://192.168.123.198:778/qrinfo(plan_No=${mpsPlan.Plan_No})}">生成二维码</a>
+                                                                       th:href="@{/qrinfo(plan_No=${mpsPlan.Plan_No})}">生成二维码</a>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
@@ -682,6 +682,7 @@
     <script>
         //查询某一款的进度
         $(function () {
+            var paths="http://192.168.123.86:778";
 
             $("#sideNav").addClass('closed');
             $('.navbar-side').animate({left: '-260px'});
@@ -697,7 +698,7 @@
                     if (!bool) {
 
                         $.ajax({
-                            url: "http://192.168.123.198:778/findErpSP",
+                            url: paths+"/findErpSP",
                             data: {"spNo": spNo},
                             dataType: "text",
                             success: function (data) {
@@ -738,7 +739,7 @@
             $("#seachInfo").click(function () {
                 var Brief = $("#typeInfo").val();
                 $.ajax({
-                    url: "http://192.168.123.198:778/pick",
+                    url: paths+"/pick",
                     data: {"Brief": Brief},
                     dataType: "text",
                     success: function (data) {
@@ -753,7 +754,7 @@
             })
 
             $("#excelExport").click(function () {
-                window.location.href = "http://192.168.123.198:778/excel"
+                window.location.href = paths+"/excel"
             })
 
 

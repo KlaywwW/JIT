@@ -147,7 +147,7 @@ public class EchartsController {//生产实时数据刷新
     		    	}
     		    	
     		    }
-    			
+
     		}
     
         }

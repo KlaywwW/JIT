@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -67,10 +67,10 @@
                    <ul class="nav" id="main-menu">
 
                   <li>
-                        <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i> JIT生产看板</a>
+                        <a class="active-menu" th:href="@{/wip}"><i class="fa fa-bar-chart-o"></i> JIT生产看板</a>
                     </li>
                       <li>
-                        <a href="http://192.168.123.198:778/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                        <a th:href="@{/pick}"><i class="fa fa-table"></i>JIT生产数据</a>
                     </li>
 
                     <li>
@@ -80,13 +80,13 @@
                                 <a href="#">成品仓</a>
                             </li>
                             <li>
-                                <a href="http://192.168.123.198:778/link">物料仓</a>
+                                <a th:href="@{/link}">物料仓</a>
                             </li>
                             <li>
                                 <a href="#">半成品仓<span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     <li>
-                                        <a href="http://192.168.123.198:778/pick">在制品明细</a>
+                                        <a th:href="@{/pick}">在制品明细</a>
                                     </li>
                                     <li>
                                         <a href="#">其他功能开发中</a>
@@ -117,8 +117,8 @@
                             JIT-WIP <small>制二线在制品系统管理</small>
                         </h1>
 						<ol class="breadcrumb">
- 									 <li><a href="http://192.168.123.198:778/pick">制二线在制明细</a></li>
- 									 <li><a href="http://192.168.123.198:778/wipdetails">各生产段在制明细</a></li>
+ 									 <li><a th:href="@{/pick}">制二线在制明细</a></li>
+ 									 <li><a th:href="@{/wipdetails}">各生产段在制明细</a></li>
 						</ol>
                     </div>
                 </div>
@@ -234,6 +234,7 @@
      
      <script>
      $(function() {
+         var paths="http://192.168.123.86:778";
     	 
     	 $("#sideNav").addClass('closed');
 			$('.navbar-side').animate({left: '-260px'});
@@ -362,7 +363,7 @@
     	 //编辑半成品上限---触发的更新请求
         var refulsh=function(linkQuee){
      	   $.ajax({
-            	url:"http://192.168.123.198:778/charts",
+            	url:paths+"/charts",
             	data:{"linkQuee":linkQuee},
             	dataType:"json",
             	success:function(data){
@@ -415,13 +416,13 @@
           
        //单击在制品上数字
        $("#wip").click(function(){
-    	  　window.location.href="http://192.168.123.198:778/pick";
+    	  　window.location.href=paths+"/pick";
           })
         
      
         //页面刷新图 表初始化
         $.ajax({
-        	url:"http://192.168.123.198:778/charts",
+        	url:paths+"/charts",
         	data:{"time":time},
         	dataType:"json",
         	success:function(data){
@@ -432,7 +433,7 @@
         		 //查询在制金额
         		
         		   $.ajax({
-        	        	url:"http://192.168.123.198:778/findAllMoney",
+        	        	url:paths+"/findAllMoney",
         	        	data:{},
         	       	dataType:"text",
         	        	success:function(data){

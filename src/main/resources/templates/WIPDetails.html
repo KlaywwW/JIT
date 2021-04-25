@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <meta charset="utf-8"/>
@@ -40,6 +40,23 @@
 
         .xianshi {
             background-color: #D8D8D8;
+        }
+
+        .zhichang {
+            border: 1px solid red;
+            margin-left: 5px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            background: green;
+        }
+
+        .bggreen {
+            background: green;
+        }
+
+        .bgred {
+            background: red;
         }
     </style>
 </head>
@@ -164,12 +181,12 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
                 <li>
-                    <a class="active-menu" href="http://192.168.123.198:778/wip"><i class="fa fa-bar-chart-o"></i>
+                    <a class="active-menu" th:href="@{/wip}"><i class="fa fa-bar-chart-o"></i>
                         JIT生产统计</a>
                 </li>
 
                 <li>
-                    <a href="http://192.168.123.198:778/pick"><i class="fa fa-table"></i>JIT生产数据</a>
+                    <a th:href="@{/pick}"><i class="fa fa-table"></i>JIT生产数据</a>
                 </li>
 
 
@@ -190,8 +207,8 @@
                         <small>制二线各生产段在制品进度统计</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="http://192.168.123.198:778/wip">首页</a></li>
-                        <li><a href="http://192.168.123.198:778/pick">生产线在制品数据</a></li>
+                        <li><a th:href="@{/wip}">首页</a></li>
+                        <li><a th:href="@{/pick}">生产线在制品数据</a></li>
 
                     </ol>
                 </div>
@@ -211,7 +228,7 @@
                                     <div>
                                         <p>
                                             <strong>制二线开料+备料(A)在制数量:<span style="color:red" th:if="${session.An!=null}"
-                                                                    th:text="${session.An}"></span></strong>
+                                                                          th:text="${session.An}"></span></strong>
                                             <span id="A" class="pull-right text-muted" th:if="${session.A!=null}"
                                                   th:text="${session.A+'%'}" style="color:green"></span>
                                         </p>
@@ -231,7 +248,7 @@
                                     <div>
                                         <p>
                                             <strong>制二线作色(B)在制数量:<span style="color:red" th:if="${session.Bn!=null}"
-                                                                  th:text="${session.Bn}"></span></strong>
+                                                                       th:text="${session.Bn}"></span></strong>
                                             <span id="B" class="pull-right text-muted" th:if="${session.B!=null}"
                                                   th:text="${session.B+'%'}" style="color:green"></span>
                                         </p>
@@ -251,7 +268,7 @@
                                     <div>
                                         <p>
                                             <strong>制二线里心(C)在制数量:<span style="color:red" th:if="${session.Cn!=null}"
-                                                                    th:text="${session.Cn}">12000个</span></strong>
+                                                                       th:text="${session.Cn}">12000个</span></strong>
                                             <span id="C" class="pull-right text-muted" th:if="${session.C!=null}"
                                                   th:text="${session.C+'%'}" style="color:green"></span>
                                         </p>
@@ -270,7 +287,7 @@
                                     <div>
                                         <p>
                                             <strong>制二线组装+包装(D)在制数量:<span style="color:red" th:if="${session.Dn!=null}"
-                                                                    th:text="${session.Dn}">12000个</span></strong>
+                                                                          th:text="${session.Dn}">12000个</span></strong>
                                             <span id="D" class="pull-right text-muted" th:if="${session.D!=null}"
                                                   th:text="${session.D+'%'}" style="color:green"></span>
                                         </p>
@@ -288,10 +305,18 @@
                                 <ul>
                                     <li><h4 style="color: #E0A800;font-weight: bold">未超出规定时间,结束时间背景颜色---黄色</h4></li>
                                     <li><h4 style="color: red;font-weight: bold">超出规定时间,结束时间背景颜色---红色</h4></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">开料+备料(A)---需要时间3天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">作色(B)---需要时间3天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">里心(C)---需要时间2天</h7></li>
-                                    <li><h7 style="color: #31B0D5;font-weight: bold">组装+包装(D)---需要时间2天</h7></li>
+                                    <li>
+                                        <h7 style="color: #31B0D5;font-weight: bold">开料+备料(A)---需要时间3天</h7>
+                                    </li>
+                                    <li>
+                                        <h7 style="color: #31B0D5;font-weight: bold">作色(B)---需要时间3天</h7>
+                                    </li>
+                                    <li>
+                                        <h7 style="color: #31B0D5;font-weight: bold">里心(C)---需要时间2天</h7>
+                                    </li>
+                                    <li>
+                                        <h7 style="color: #31B0D5;font-weight: bold">组装+包装(D)---需要时间2天</h7>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -514,6 +539,21 @@
                                                          th:text="${session.isZ}"></div>
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang bggreen">置场1</div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang">置场2</div>
+                                                <div class="col-md-2 col-sm-3 col-xs-2 zhichang">置场3</div>
+                                                <div class="col-md-2 col-sm-3 col-xs-2 zhichang">置场4</div>
+                                            </div>
+                                            <div class="row" style="margin-top: 10px;">
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang">置场5</div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang">置场6</div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang">置场7</div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 zhichang">置场8</div>
+                                            </div>
+
+
                                         </div>
                                     </div>
 
@@ -556,12 +596,13 @@
 
 <script>
     $(function () {
+        var paths = "http://192.168.123.86:778";
         //获取A BC 3段的值
         var A = $("#A").text();
         var B = $("#B").text();
         var C = $("#C").text();
         var D = $("#D").text();
-        console.log(A + "-" + B+ "-"  + C+ "-" +D)
+        console.log(A + "-" + B + "-" + C + "-" + D)
 
         $("#A1").css("width", A);
         $("#B1").css("width", B);
@@ -597,7 +638,7 @@
 
             if (Str == "暂无记录" || Str == "" || Str == null) {
                 $.ajax({
-                    url: "http://192.168.123.198:778/update",
+                    url: paths + "/update",
                     data: {"No": No, "index": index},
                     dataType: "text",
                     success: function (data) {
@@ -605,7 +646,7 @@
                             $("#textInfo").css('display', 'inline-block');
                             $("#textInfo").text("新增数据成功");
                             $("#textInfo").css({"font-color": "#FF6A6A"});
-                            window.location.href = "http://192.168.123.198:778/wipdetails"
+                            window.location.href = paths + "/wipdetails"
                         } else {
                             $("#textInfo").css('display', 'inline-block');
                             $("#textInfo").text("禁止修改前工序时间");
@@ -620,7 +661,7 @@
                 })//ajax
             } else {
                 $.ajax({
-                    url: "http://192.168.123.198:778/update2",
+                    url: paths + "/update2",
                     data: {"No": No, "index": index},
                     dataType: "text",
                     success: function (data) {
@@ -628,7 +669,7 @@
                             $("#textInfo").css('display', 'inline-block');
                             $("#textInfo").text("修改成功");
                             $("#textInfo").css({"font-color": "#FF6A6A"});
-                            window.location.href = "http://192.168.123.198:778/wipdetails"
+                            window.location.href = paths + "/wipdetails"
                         } else {
                             $("#textInfo").css('display', 'inline-block');
                             $("#textInfo").text("禁止修改前工序时间");
@@ -643,6 +684,20 @@
                 })//ajax
             }
         })
+
+        $(".zhichang").click(function () {
+            // "rgb(255, 0, 0)"
+            console.log($(this).css("background-color"));
+            if ("rgb(0, 128, 0)" == $(this).css("background-color")) {
+                $(this).css("background", "red");
+            } else if("rgb(255, 0, 0)"==$(this).css("background-color")){
+                $(this).css("background", "yellow");
+            }else {
+                $(this).css("background", "green");
+            }
+        });
+
+
 
 
         //获取一个特定的值 如果是第一次进来 就执行
